@@ -117,6 +117,10 @@ try {
 			key: 'BRANCH_PREFIX',
 			default: 'repo-sync/SOURCE_REPO_NAME'
 		}),
+		BRANCH_DELIMITER: getInput({
+			key: 'BRANCH_DELIMITER',
+			default: '/'
+		}),
 		FORK: getInput({
 			key: 'FORK',
 			default: false,

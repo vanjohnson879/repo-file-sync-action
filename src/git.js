@@ -19,6 +19,7 @@ const {
 	SKIP_PR,
 	PR_BODY,
 	BRANCH_PREFIX,
+	BRANCH_DELIMITER,
 	FORK
 } = require('./config')
 
@@ -124,7 +125,7 @@ class Git {
 	async createPrBranch() {
 		const prefix = BRANCH_PREFIX.replace('SOURCE_REPO_NAME', GITHUB_REPOSITORY.split('/')[1])
 
-		let newBranch = path.join(prefix, this.repo.branch).replace(/\\/g, '/').replace(/\/\./g, '/')
+		let newBranch = [ prefix, this.repo.branch ].join(BRANCH_DELIMITER).replace(/\\/g, BRANCH_DELIMITER).replace(/\/\./g, BRANCH_DELIMITER)
 
 		if (OVERWRITE_EXISTING_PR === false) {
 			newBranch += `-${ Math.round((new Date()).getTime() / 1000) }`
@@ -421,7 +422,7 @@ class Git {
 			Synced local file(s) with [${ GITHUB_REPOSITORY }](https://github.com/${ GITHUB_REPOSITORY }).
 
 			${ PR_BODY }
-			
+
 			${ changedFiles }
 
 			---

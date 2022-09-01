@@ -12,7 +12,7 @@ inputs:
       GitHub App Installation Token to used to access repos
     required: false
   CONFIG_PATH:
-    description: | 
+    description: |
       The path for the sync configuration file
     required: false
   PR_LABELS:
@@ -86,6 +86,10 @@ inputs:
   BRANCH_PREFIX:
     description: |
       Specify a different prefix for the new branch in the target repo. Defaults to repo-sync/SOURCE_REPO_NAME
+    required: false
+  BRANCH_DELIMITER:
+    description: |
+      Character used to separate the BRANCH_PREFIX and the SOURCE_REPO_NAME. Default to '/'
     required: false
   FORK:
     description: |

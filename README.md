@@ -1,5 +1,5 @@
 <div align="center">
-  
+
 # Repo File Sync Action
 
 [![Build CI](https://github.com/BetaHuhn/repo-file-sync-action/workflows/Test%20CI/badge.svg)](https://github.com/BetaHuhn/repo-file-sync-action/actions?query=workflow%3A%22Test+CI%22) [![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/BetaHuhn/repo-file-sync-action/blob/master/LICENSE) ![David](https://img.shields.io/david/betahuhn/repo-file-sync-action)
@@ -114,11 +114,12 @@ Here are all the inputs [repo-file-sync-action](https://github.com/BetaHuhn/repo
 | `PR_BODY` | Additional content to add in the PR description. | **No** | '' |
 | `ORIGINAL_MESSAGE` | Use original commit message instead. Only works if the file(s) were changed and the action was triggered by pushing a single commit. | **No** | false |
 | `COMMIT_AS_PR_TITLE` | Use first line of the commit message as PR title. Only works if `ORIGINAL_MESSAGE` is `true` and working. | **No** | false |
-| `COMMIT_EACH_FILE` | Commit each file seperately | **No** | true |
+| `COMMIT_EACH_FILE` | Commit each file separately | **No** | true |
 | `GIT_EMAIL` | The e-mail address used to commit the synced files | **Only when using installation token** | the email of the PAT used |
 | `GIT_USERNAME` | The username used to commit the synced files | **Only when using installation token** | the username of the PAT used |
 | `OVERWRITE_EXISTING_PR` | Overwrite any existing Sync PR with the new changes | **No** | true |
 | `BRANCH_PREFIX` | Specify a different prefix for the new branch in the target repo | **No** | repo-sync/SOURCE_REPO_NAME |
+| `BRANCH_DELIMITER` | Character used to separate the BRANCH_PREFIX and the SOURCE_REPO_NAME. Default to '/' | **No** | `/` |
 | `TMP_DIR` | The working directory where all git operations will be done | **No** | tmp-${ Date.now().toString() } |
 | `DRY_RUN` | Run everything except that nothing will be pushed | **No** | false |
 | `SKIP_CLEANUP` | Skips removing the temporary directory. Useful for debugging | **No** | false |
@@ -224,7 +225,7 @@ group:
   repos: |
     user/repo
     user/repo1
-  files: 
+  files:
     - source: workflows/build.yml
       dest: .github/workflows/build.yml
     - source: LICENSE.md
@@ -246,7 +247,7 @@ group:
       user/repo2
 
   # second group
-  - files: 
+  - files:
       - source: configs/dependabot.yml
         dest: .github/dependabot.yml
     repos: |
@@ -389,6 +390,17 @@ The new branch will then be `custom-branch/SOURCE_BRANCH_NAME`.
 
 > You can use `SOURCE_REPO_NAME` in your custom branch prefix as well and it will be replaced with the actual repo name
 
+### Different branch delimiter
+
+```yml
+uses: BetaHuhn/repo-file-sync-action@v1
+with:
+    GH_PAT: ${{ secrets.GH_PAT }}
+    BRANCH_DELIMITER: '_'
+```
+
+The new branch will then be `repo-sync_SOURCE_BRANCH_NAME`.
+
 ### Custom commit body
 
 You can specify a custom commit body. This will be appended to the commit message, separated by two new lines. For example:
@@ -440,7 +452,7 @@ This PR was created automatically by the repo-file-sync-action workflow run xxx.
 
 ### Fork and pull request workflow
 
-If you do not wish to grant this action write access to target repositories, you can specify a bot/user Github acccount that you do have access to with the `FORK` parameter. 
+If you do not wish to grant this action write access to target repositories, you can specify a bot/user Github acccount that you do have access to with the `FORK` parameter.
 
 A fork of each target repository will be created on this account, and all changes will be pushed to a branch on the fork, instead of upstream. Pull requests will be opened from the forks to target repositories.
 
